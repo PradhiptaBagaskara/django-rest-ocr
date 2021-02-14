@@ -1,0 +1,44 @@
+item{
+    id: 1
+    name: 'province'
+}
+
+item{
+    id: 2
+    name: 'city'
+}
+
+item{
+    id: 3
+    name: 'NIK'
+}
+
+item{
+    id: 4
+    name: 'Name'
+}
+
+item{
+    id: 5
+    name: 'dob'
+}
+item{
+    id: 6
+    name: 'address'
+}
+item{
+    id: 7
+    name: 'rtrw'
+}
+item{
+    id: 8
+    name: 'subdistrict'
+}
+item{
+    id: 9
+    name: 'district'
+}
+item{
+    id: 10
+    name: 'exp'
+}
