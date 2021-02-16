@@ -3,11 +3,14 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+#custom ignore
+client/
+classes/
+
 # C extensions
 *.so
 
 # Distribution / packaging
-/classes
 .Python
 build/
 develop-eggs/

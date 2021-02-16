@@ -38,15 +38,16 @@ def detect_and_create_boxes(image, model_dir):
     ckpt_path = os.path.join(model_dir, 'frozen_inference_graph.pb')
 
     output = {}
+    tensor = tf.compat.v1
 
-    tf.reset_default_graph()
-    detection_graph = tf.Graph()
+    tensor.reset_default_graph()
+    detection_graph = tensor.Graph()
     with detection_graph.as_default():
-        od_graph_def = tf.GraphDef()
-        with tf.gfile.GFile(ckpt_path, 'rb') as fid:
+        od_graph_def = tensor.GraphDef()
+        with tensor.gfile.GFile(ckpt_path, 'rb') as fid:
             serialize_graph = fid.read()
             od_graph_def.ParseFromString(serialize_graph)
-            tf.import_graph_def(od_graph_def, name='')
+            tensor.import_graph_def(od_graph_def, name='')
 
     label_map = label_map_util.load_labelmap(label_path)
     label_map_dict = label_map_util.get_label_map_dict(label_path)
@@ -57,8 +58,8 @@ def detect_and_create_boxes(image, model_dir):
     category_index = label_map_util.create_category_index(categories)
 
     with detection_graph.as_default():
-        tf_session = tf.InteractiveSession()  # faster session
-        ops = tf.get_default_graph().get_operations()
+        tf_session = tensor.InteractiveSession()  # faster session
+        ops = tensor.get_default_graph().get_operations()
         tensor_dict = {}
         image_np = load_image_into_numpy_array(image)
         image_for_saved = image_np
@@ -155,10 +156,10 @@ def crop_image(image,
     a,b,c,d = int(left), int(right), int(top), int(bottom)
     arr = arr[c:d,a:b]
     data = {
-        'ymin': top,
-        'xmin': left,
-        'ymax': bottom,
-        'xmax': right,
+        'ymin': c,
+        'xmin': a,
+        'ymax': d,
+        'xmax': b,
     }
     return (label_name, (arr, data))
 
@@ -233,7 +234,6 @@ def list_cropped_tuple(
 
 def ocr_label_to_dict(image, 
               model_dir='/model/ktp', 
-              label_path='ktp.pbtxt', 
               tess_config=''
                ):
     """
@@ -241,7 +241,6 @@ def ocr_label_to_dict(image,
 
       @image : Image.open(image) #PIL image
       @ckpt_path : model path
-      @label_path : label path
       @img_name : boxed image name
       @save_bounding_img : save boxed image default False
       @use_tf_version : tensorflow version. default 1,

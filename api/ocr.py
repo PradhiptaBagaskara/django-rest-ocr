@@ -5,7 +5,7 @@ import pytesseract
 import numpy as np
 from io import BytesIO
 from PIL import Image
-from api.utils import ocr_util
+from api.utils import detection_util
 
 
 class TFOCR(object):
@@ -13,7 +13,8 @@ class TFOCR(object):
         self.model_dir = model_dir
         self.image = imageByte
         self.unreadable = "unreadable"
-        self.config=r'-c preserve_interword_spaces=1 -l lex --oem 1 --psm 6 --tessdata-dir "tessdata/"'
+        self.tessdata = "tessdata/"
+        self.config=r'-c preserve_interword_spaces=1 -l lex --oem 1 --psm 6'
 
         self.data = {}
     
@@ -21,11 +22,8 @@ class TFOCR(object):
         """
             method convert byte to PIL image
         """
-        # io = BytesIO()
-        # self.image.save(io, format="JPEG")
         image = BytesIO(bytearray(self.image))
         img = Image.open(image)
-        # img.save('ktp-pdf.jpg')
         return img
 
     def clean_str(self, text):
@@ -53,7 +51,8 @@ class TFOCR(object):
 
     def run_ocr(self):
         img = self.img_to_PIL()
-        ocr = ocr_util.ocr_label_to_dict(image= img, model_dir=self.model_dir, tess_config=self.config)
+        config = self.config +  r' --tessdata-dir "{}"'.format(re.sub(r"\\","/",self.tessdata))
+        ocr = detection_util.ocr_label_to_dict(image= img, model_dir=self.model_dir, tess_config=config)
         return ocr
 
        

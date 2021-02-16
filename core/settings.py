@@ -11,13 +11,16 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # 'path/to/custom/storage'
 STORAGE_DIR = os.path.join(BASE_DIR, 'storage') 
-MODEL_DIR = os.path.join(BASE_DIR, 'model') 
-TESSDATA_DIR = os.path.join(BASE_DIR, 'tessdata') 
+VOLUME_DIR = 'G:\\py_project\\tRAINN\\volume'
+MODEL_DIR = os.path.join(VOLUME_DIR, 'models') 
+TESSDATA_DIR = os.path.join(VOLUME_DIR, 'tessdata/') 
 
 
 
@@ -45,6 +48,7 @@ INSTALLED_APPS = [
     'api',
     'rest_framework',
     'rest_framework.authtoken',
+    'client',
 ]
 
 REST_FRAMEWORK = {

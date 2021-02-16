@@ -13,6 +13,12 @@ from rest_framework.permissions import IsAuthenticated
 
 from api.ocr import TFOCR
 
+@api_view(['GET', 'POST'])
+def handler404(request, exception=None):
+    return Response({
+        'status_code': 404,
+        'error': 'The resource was not found'
+    }, status=404)
 
 def get_list_models():
     models = glob.glob(os.path.join(settings.MODEL_DIR, "*"))
@@ -53,6 +59,8 @@ def ocr_by_model(request, model_id):
 
             model_dir = os.path.join(settings.MODEL_DIR, model_id)
             ocr = TFOCR(img.read(), model_dir)
+            ocr.tessdata = settings.TESSDATA_DIR
+            print(ocr.tessdata )
             filename = {'filename': str(img)}
             result = {**filename, **ocr.run_ocr()}
             
