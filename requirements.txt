@@ -1,4 +1,4 @@
-tensorflow==2.4.1
+tensorflow
 absl-py==1.4.0
 asgiref==3.7.2
 astunparse==1.6.3
