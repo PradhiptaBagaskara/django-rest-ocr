@@ -33,7 +33,7 @@ jobs:
       - checkout
       - run:
           name: "Install OCR"
-          command: sudo apt install tesseract-ocr-all -y
+          command: apt install tesseract-ocr-all -y
       - python/install-packages:
           pkg-manager: pip
           # app-dir: ~/project/package-directory/  # If you're requirements.txt isn't in the root directory.
